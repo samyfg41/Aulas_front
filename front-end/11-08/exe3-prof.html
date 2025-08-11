@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Notas simples</title>
+  </head>
+  <body>
+    <h1>Minhas Notas</h1>
+
+    <textarea id="nota"></textarea><br />
+    <button id="salvar" onclick="salvarNota()">Salvar Nota</button>
+    <button id="limpar">Limpar Todas</button>
+
+    <div id="notas"></div>
+
+    <script>
+      function mostrarNotas() {
+        let notas = localStorage.getItem("notas");
+        if (!notas) return (document.getElementById("notas").innerHTML = "");
+
+        let lista = notas.split("|||"); 
+        //O método .split() no JavaScript pega uma string e quebra ela em várias partes, transformando-a em um array, usando como base um separador que você indicar.
+        let html = "";
+        for (let i = 0; i < lista.length; i++) {
+          if (lista[i].trim() !== "") {
+            html +=
+              "<p>" +
+              lista[i] +
+              " <button onclick='removerNota(" +
+              i +
+              ")'>X</button></p>";
+          }
+        }
+        document.getElementById("notas").innerHTML = html;
+      }
+
+      function salvarNota() {
+        let texto = document.getElementById("nota").value;
+        if (texto.trim() === "") return;
+        let notas = localStorage.getItem("notas") || "";
+        localStorage.setItem("notas", notas + texto + "|||");
+        document.getElementById("nota").value = "";
+        mostrarNotas();
+      }
+
+      function removerNota(index) {
+        let lista = (localStorage.getItem("notas") || "").split("|||");
+        lista.splice(index, 1);
+
+        localStorage.setItem("notas", lista.join("|||"));
+        mostrarNotas();
+      }
+
+      function limparNotas(){
+        localStorage.getItem('notas');
+        mostrarNotas();
+      }
+
+      mostrarNotas();
+    </script>
+  </body>
+</html>
