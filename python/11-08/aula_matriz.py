@@ -9,13 +9,13 @@ def criar_matriz(n_linhas, n_colunas):
     for item in range(n_linhas):
         linha = []
         for j in range(n_colunas):
-            n = int(input('Números: '))
+            n = int(input('Número: '))
             linha.append(n)
         matriz.append(linha)
     return matriz
 
 def somar_elementos(matriz):
-    soma = [] #var acumuladora
+    soma = 0 #var acumuladora
     for linha in range(len(matriz)):
         for coluna in range(len(matriz[linha])):
             soma+= matriz[linha][coluna]
