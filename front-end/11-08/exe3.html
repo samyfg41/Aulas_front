@@ -1,58 +1,62 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exercício 3</title>
-</head>
-<body>
-    <form>
-        <label>
-            Nota:
-            <textarea id="nota"></textarea>
-        </label>
-        <br>
-        <input type="button" value="Gravar" onclick="salvarNotas()">
-        <input type="button" value="Limpar todas as notas" onclick="limparNotas()">
-    </form>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Notas simples</title>
+  </head>
+  <body>
+    <h1>Minhas Notas</h1>
+
+    <textarea id="nota"></textarea><br />
+    <button id="salvar" onclick="salvarNota()">Salvar Nota</button>
+    <button id="limpar" onclick="limparNotas()">Limpar Todas</button>
+
     <div id="notas"></div>
 
     <script>
-        function salvarNotas() {
-            let texto = document.getElementById('nota').value;
-            let notas = localStorage.getItem('notas') || "";
+      function mostrarNotas() {
+        let notas = localStorage.getItem("notas");
+        if (!notas) return (document.getElementById("notas").innerHTML = "");
 
-            localStorage.setItem('notas', notas + texto + "|||")
-
-            document.getElementById('nota').value = "";
-
+        let lista = notas.split("|||"); 
+        //O método .split() no JavaScript pega uma string e quebra ela em várias partes, transformando-a em um array, usando como base um separador que você indicar.
+        let html = "";
+        for (let i = 0; i < lista.length; i++) {
+          if (lista[i].trim() !== "") {
+            html +=
+              "<p>" +
+              lista[i] +
+              " <button onclick='removerNota(" +
+              i +
+              ")'>X</button></p>";
+          }
         }
+        document.getElementById("notas").innerHTML = html;
+      }
 
-        function mostrarNotas() {
-            let notas = localStorage.getItem('notas');
+      function salvarNota() {
+        let texto = document.getElementById("nota").value;
+        if (texto.trim() === "") return;
+        let notas = localStorage.getItem("notas") || "";
+        localStorage.setItem("notas", notas + texto + "|||");
+        document.getElementById("nota").value = "";
+        mostrarNotas();
+      }
 
-            if(!notas) return document.getElementById("notas").innerHTML = '';
+      function removerNota(index) {
+        let lista = (localStorage.getItem("notas") || "").split("|||");
+        lista.splice(index, 1);
 
-            let lista = notas.split('|||');
+        localStorage.setItem("notas", lista.join("|||"));
+        mostrarNotas();
+      }
 
-            let html = '';
+      function limparNotas(){
+        localStorage.removeItem('notas');
+        mostrarNotas();
+      }
 
-            for(let i = 0; i < lista.lenght; i++){
-                if(lista[i].trim() !== ''){
-                    html +=
-                        '<p>' +
-                            lista[i] +
-                            '<input type="button" onclick="removerNota(' + i + ')"  value="X">' +
-                        '</p>';
-                }
-            }
-            document.getElementById('notas').innerHTML = html
-        }
-
-
-
-
-        mostrarNotas()
+      mostrarNotas();
     </script>
-</body>
+  </body>
 </html>
