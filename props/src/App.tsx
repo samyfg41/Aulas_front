@@ -14,6 +14,7 @@ function App() {
       <h1>Exemplo 03</h1>
       <Botao cor="green" texto="Clique aqui" onClick={ () => alert("Botão Clicado!")} />
     
+      
     </>
 
   );
